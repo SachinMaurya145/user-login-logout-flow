@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function LoginPage({ setLoggedIn }) {
-    const [username, setUsername] = useState('eve.holt@reqres.in');
-    const [password, setPassword] = useState('cityslicka');
+  const [username, setUsername] = useState('eve.holt@reqres.in');
+  const [password, setPassword] = useState('cityslicka');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
