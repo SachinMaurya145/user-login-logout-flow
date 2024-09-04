@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginPage from './LoginPage';
-import HomePage from './HomePage';
-import NotFoundPage from './NotFoundPage';
+import LoginPage from '../AuthComponent/LoginPage';
+import HomePage from '../UIComponets/HomePage';
+import NotFoundPage from '../UIComponets/NotFoundPage';
 
 function MainComponent() {
   const [isLoggedIn, setLoggedIn] = useState(false);
