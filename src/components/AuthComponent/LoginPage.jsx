@@ -5,46 +5,35 @@ import './loginSignUI.css'; // Import the CSS file
 
 function AuthPage({ setLoggedIn }) {
   const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
-  const [username, setUsername] = useState('eve.holt@req768res.in');
-  const [password, setPassword] = useState('cityslick875a');
+  const [userEmail, setUserEmail] = useState(""); // Replaced username with userEmail
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const login = async () => {
-    try {
-      const response = await axios.post('https://reqres.in/api/login', {
-        email: username,
-        password: password,
-      });
-      const { token } = response.data;
-      localStorage.setItem('token', token);
-      setLoggedIn(true);
-      alert('Login successful!');
-      navigate('/home'); // Navigate to the home page after successful login
-    } catch (error) {
-      setError('Login failed. Please check your credentials.');
-    }
+  const login = () => {
+    alert('login');
   };
 
-  const signUp = async () => {
+  const signUp = () => {
     // Sign-up logic can be added here if needed
     alert('Sign-up functionality is currently not implemented.');
   };
 
   return (
     <div className="auth-page">
+      <h3 style={{color:"#008bd4"}}> This is a Basic UI of React Login With sign To start working on any demo project </h3>
       <div className="auth-container">
         {isLogin ? (
           <>
             <h1 className="auth-title">Login</h1>
             {error && <div className="error">{error}</div>}
             <input
-              type="text"
+              type="email"
               className="auth-input"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Email"
+              value={userEmail} // Updated
+              onChange={(e) => setUserEmail(e.target.value)} // Updated
             />
             <input
               type="password"
@@ -54,18 +43,18 @@ function AuthPage({ setLoggedIn }) {
               onChange={(e) => setPassword(e.target.value)}
             />
             <button className="auth-button" onClick={login}>Login</button>
-            <button className="switch-button" onClick={() => setIsLogin(false)}> Sign Up</button>
+            <button className="switch-button" onClick={() => setIsLogin(false)}> Switch to  Sign Up</button>
           </>
         ) : (
           <>
             <h1 className="auth-title">Sign Up</h1>
             {error && <div className="error">{error}</div>}
             <input
-              type="text"
+              type="email"
               className="auth-input"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Email"
+              value={userEmail} // Updated
+              onChange={(e) => setUserEmail(e.target.value)} // Updated
             />
             <input
               type="password"
@@ -82,7 +71,7 @@ function AuthPage({ setLoggedIn }) {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <button className="auth-button" onClick={signUp}>Sign Up</button>
-            <button className="switch-button" onClick={() => setIsLogin(true)}> Login</button>
+            <button className="switch-button" onClick={() => setIsLogin(true)}> Switch to  Login</button>
           </>
         )}
       </div>
