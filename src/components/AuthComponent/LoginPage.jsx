@@ -1,18 +1,29 @@
 import React, { useState, useEffect } from "react";
-
 import { useNavigate } from "react-router-dom";
+import HomePage from "../UIComponets/HomePage";
 import "./loginSignUI.css"; // Import the CSS file
 
 function AuthPage({ setLoggedIn }) {
-  const [isLogin, setIsLogin] = useState(false); // Toggle between login and signup
-  const [userEmail, setUserEmail] = useState("email"); // User's email
+  const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
+  const [userEmail, setUserEmail] = useState("@gmail.com"); // User's email
   const [password, setPassword] = useState(""); // Password
   const [confirmPassword, setConfirmPassword] = useState(""); // Confirm password for sign-up
   const [allData, setAllData] = useState([]); // To store sign-up data
   const [disabledSign, setDisabledSign] = useState(true); // To disable sign-up button if form is invalid
-  const [disabledLogin, setDisabledLogin] = useState(true); // To disable login button if form is invalid
+  const [disableLogin, setDisabledLogin] = useState(true); // disabled login 
   const [error, setError] = useState(""); // For displaying error messages
   const navigate = useNavigate(); // React Router's navigation hook
+
+  // save & get  the data in local storage  - >>>>>>>>>>>>>>
+
+  useEffect(() => {
+    const data = localStorage.getItem("signUpData");
+    if (data) {
+      const parsedData = JSON.parse(data);
+      setAllData(parsedData);
+      console.log("Loaded data from local storage: ", parsedData);
+    }
+  }, []);
 
   // Validate for Sign-Up button
   useEffect(() => {
@@ -39,16 +50,24 @@ function AuthPage({ setLoggedIn }) {
   }, [userEmail, password, confirmPassword]);
 
   // Validate for Login button
+
   useEffect(() => {
     if (userEmail !== "" && password !== "") {
       setDisabledLogin(false);
     } else {
       setDisabledLogin(true);
     }
-  }, [userEmail, password]);
+
+  }, [userEmail, password])
 
   const login = () => {
-    alert("Login attempt");
+    let userLoginData = {
+      email: userEmail,
+      password: password
+    }
+    console.log("@@ login", userLoginData);
+
+   
     // Add your login logic here, e.g., make API call with userEmail and password
   };
 
@@ -58,16 +77,23 @@ function AuthPage({ setLoggedIn }) {
       password: password,
     };
 
-    if (password === confirmPassword) {
-      setAllData(signUpData);
-      console.log("Sign Up Data:", signUpData);
-      // Add sign-up API call logic here
-    }
+    // Retrieve existing data from localStorage
+    const existingData = JSON.parse(localStorage.getItem("signUpData")) || [];
+    // Append new sign-up data
+    const updatedData = [...existingData, signUpData];
+    // Save updated data back to localStorage
+    localStorage.setItem("signUpData", JSON.stringify(updatedData));
+    console.log("Sign Up Data:", updatedData);
+    setConfirmPassword("");
+    setUserEmail("");
+    setPassword("");
+
   };
 
   const handleRefreshPage = () => {
     window.location.reload();
   };
+
 
   return (
     <div className="auth-page">
@@ -103,8 +129,8 @@ function AuthPage({ setLoggedIn }) {
               onChange={(e) => setPassword(e.target.value)}
             />{" "}
             <button
-              className={disabledLogin ? "auth-button-disabled" : "auth-button"}
-              disabled={disabledLogin}
+              className={disableLogin ? "auth-button-bg" : "auth-button"}
+              disabled={disableLogin}
               onClick={login}
             >
               {" "}
