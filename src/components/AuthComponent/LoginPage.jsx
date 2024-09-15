@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import HomePage from "../UIComponets/HomePage";
 import "./loginSignUI.css"; // Import the CSS file
 
-function AuthPage({ setLoggedIn }) {
+function AuthPage() {
   const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
   const [userEmail, setUserEmail] = useState("@gmail.com"); // User's email
   const [password, setPassword] = useState(""); // Password
@@ -60,16 +59,34 @@ function AuthPage({ setLoggedIn }) {
 
   }, [userEmail, password])
 
+  // login handle 
   const login = () => {
-    let userLoginData = {
-      email: userEmail,
-      password: password
-    }
-    console.log("@@ login", userLoginData);
+    console.log("Attempting login with:", userEmail, password);
+    const userLoginData = { email: userEmail, password: password };
+    console.log("User login data:", userLoginData);
 
-   
-    // Add your login logic here, e.g., make API call with userEmail and password
+    const findMatchingUser = (allData, userLoginData) => {
+      return allData.find(
+        (user) =>
+          user.email === userLoginData.email &&
+          user.password === userLoginData.password
+      );
+    };
+
+    const matchingUser = findMatchingUser(allData, userLoginData);
+    console.log("Matching user:", matchingUser);
+
+    if (matchingUser) {
+      console.log("Navigating to /home");
+      navigate('/home');
+      localStorage.setItem("loginToken", "true");
+    } else {
+      console.log("Login failed");
+      setError("Invalid email or password");
+    }
   };
+
+
 
   const signUp = () => {
     const signUpData = {
@@ -85,6 +102,7 @@ function AuthPage({ setLoggedIn }) {
     localStorage.setItem("signUpData", JSON.stringify(updatedData));
     console.log("Sign Up Data:", updatedData);
     setConfirmPassword("");
+    setIsLogin(true);
     setUserEmail("");
     setPassword("");
 
